@@ -9,6 +9,9 @@ const cors = require('cors');
 // Kopplar till databasen
 const db = require('./config/db');
 
+// Importerar routes
+const authRoutes = require('./routes/authRoutes');
+
 // Skapar express-appen
 const app = express();
 
@@ -16,9 +19,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Använder routes
+app.use('/api/auth', authRoutes);
+
 // Test route - för att kolla att servern fungerar
 app.get('/', (req, res) => {
-  res.json({ message: 'Digital Invitations API fungerar! 🎉' });
+  res.json({ message: 'Digital Invitations API fungerar!  🎉' });
 });
 
 // Startar servern på port 8080
