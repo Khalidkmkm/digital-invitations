@@ -1,10 +1,114 @@
+/* AdminPanel.module.css - Styling för adminpanelen */
 
-
+/* Huvudlayout - sidebar + main bredvid varandra */
 .container {
+  display: flex;
   min-height: 100vh;
-  background: #f9f4ee;
-  padding: 40px;
   font-family: 'Georgia', serif;
+}
+
+/* Sidebar till vänster */
+.sidebar {
+  width: 260px;
+  background: #2c2416;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0;
+  position: fixed;
+  height: 100vh;
+}
+
+.logo {
+  padding: 0 30px 40px;
+  border-bottom: 1px solid rgba(201,169,110,0.2);
+}
+
+.logoBadge {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #c9a96e;
+  margin-bottom: 8px;
+  font-family: 'Raleway', sans-serif;
+}
+
+.logoTitle {
+  font-size: 22px;
+  font-weight: 300;
+  color: white;
+  line-height: 1.3;
+  font-style: italic;
+}
+
+/* Navigation knappar */
+.nav {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+  flex: 1;
+}
+
+.navItem {
+  padding: 14px 30px;
+  background: transparent;
+  border: none;
+  color: #9c8b78;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s;
+}
+
+.navItem:hover {
+  color: white;
+  background: rgba(201,169,110,0.1);
+}
+
+/* Aktiv nav knapp */
+.navItemActive {
+  padding: 14px 30px;
+  background: rgba(201,169,110,0.15);
+  border: none;
+  border-left: 2px solid #c9a96e;
+  color: #c9a96e;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.logoutBtn {
+  margin: 0 30px;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid rgba(201,169,110,0.3);
+  color: #9c8b78;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.logoutBtn:hover {
+  border-color: #c9a96e;
+  color: #c9a96e;
+}
+
+/* Huvudinnehåll till höger */
+.main {
+  margin-left: 260px;
+  flex: 1;
+  background: #f9f4ee;
+  min-height: 100vh;
+}
+
+.content {
+  padding: 60px 50px;
 }
 
 .title {
@@ -15,8 +119,106 @@
 }
 
 .subtitle {
-  font-size: 14px;
+  font-size: 13px;
   color: #9c8b78;
   letter-spacing: 2px;
+  font-family: 'Raleway', sans-serif;
+  margin-bottom: 40px;
+}
+
+/* Statistik kort */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 30px;
+}
+
+.statCard {
+  background: white;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+}
+
+.statNumber {
+  font-size: 48px;
+  font-weight: 300;
+  color: #c9a96e;
+  font-family: 'Georgia', serif;
+  margin-bottom: 8px;
+}
+
+.statLabel {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #9c8b78;
+  font-family: 'Raleway', sans-serif;
+}
+
+/* Formulär styling */
+.form {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 30px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #9c8b78;
+  font-family: 'Raleway', sans-serif;
+}
+
+.input {
+  padding: 14px 20px;
+  border: 1px solid #e8d5b0;
+  background: white;
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  color: #2c2416;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input:focus {
+  border-color: #c9a96e;
+}
+
+.submitBtn {
+  padding: 16px 40px;
+  background: #2c2416;
+  border: none;
+  color: #c9a96e;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 10px;
+  width: fit-content;
+}
+
+.submitBtn:hover {
+  background: #c9a96e;
+  color: white;
+}
+
+.success {
+  color: #27ae60;
+  font-size: 13px;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
   font-family: 'Raleway', sans-serif;
 }
