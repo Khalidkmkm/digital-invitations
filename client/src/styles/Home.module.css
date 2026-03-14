@@ -79,3 +79,48 @@
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Inbjudningslista */
+.invitationList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+.invitationCard {
+  background: white;
+  padding: 24px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+}
+
+.invitationTitle {
+  font-size: 20px;
+  font-weight: 300;
+  color: #2c2416;
+  margin-bottom: 8px;
+}
+
+.invitationDate, .invitationLocation, .invitationDress {
+  font-size: 13px;
+  color: #9c8b78;
+  font-family: 'Raleway', sans-serif;
+  margin-bottom: 4px;
+}
+
+.invitationId {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #c9a96e;
+  font-family: 'Raleway', sans-serif;
+}
+
+.empty {
+  font-size: 14px;
+  color: #9c8b78;
+  font-family: 'Raleway', sans-serif;
+  margin-top: 30px;
+}
