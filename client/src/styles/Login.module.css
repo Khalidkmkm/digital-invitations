@@ -1,0 +1,91 @@
+/* Login.module.css - Styling för login sidan */
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #f9f4ee 0%, #f0e8d8 50%, #f9f4ee 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Georgia', serif;
+}
+
+/* Kortet i mitten */
+.card {
+  background: white;
+  padding: 60px 50px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.06);
+}
+
+.badge {
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #c9a96e;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 300;
+  color: #2c2416;
+  margin: 0;
+}
+
+/* Guldlinje under titeln */
+.divider {
+  width: 40px;
+  height: 1px;
+  background: #c9a96e;
+  margin: 20px auto;
+}
+
+/* Felmeddelande */
+.error {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-bottom: 16px;
+  font-family: 'Raleway', sans-serif;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input {
+  padding: 14px 20px;
+  border: 1px solid #e8d5b0;
+  background: transparent;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  color: #2c2416;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+/* Input markeras när man klickar på den */
+.input:focus {
+  border-color: #c9a96e;
+}
+
+.button {
+  padding: 16px;
+  background: #2c2416;
+  border: none;
+  color: #c9a96e;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 8px;
+}
+
+.button:hover {
+  background: #c9a96e;
+  color: white;
+}

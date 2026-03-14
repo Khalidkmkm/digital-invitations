@@ -1,0 +1,22 @@
+
+
+.container {
+  min-height: 100vh;
+  background: #f9f4ee;
+  padding: 40px;
+  font-family: 'Georgia', serif;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 300;
+  color: #2c2416;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #9c8b78;
+  letter-spacing: 2px;
+  font-family: 'Raleway', sans-serif;
+}

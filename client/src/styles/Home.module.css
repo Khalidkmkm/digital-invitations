@@ -1,0 +1,81 @@
+
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #f9f4ee 0%, #f0e8d8 50%, #f9f4ee 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Georgia', serif;
+}
+
+.hero {
+  text-align: center;
+  padding: 40px 20px;
+  animation: fadeIn 1.2s ease forwards;
+}
+
+.badge {
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #c9a96e;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: clamp(52px, 10vw, 96px);
+  font-weight: 300;
+  color: #2c2416;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.titleItalic {
+  font-size: clamp(52px, 10vw, 96px);
+  font-weight: 300;
+  font-style: italic;
+  color: #c9a96e;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.divider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c9a96e, transparent);
+  margin: 24px auto;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #9c8b78;
+  margin-bottom: 40px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+  letter-spacing: 1px;
+  max-width: 400px;
+  line-height: 1.8;
+}
+
+.button {
+  padding: 16px 48px;
+  background: transparent;
+  border: 1px solid #c9a96e;
+  color: #c9a96e;
+  font-size: 11px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Raleway', sans-serif;
+}
+
+.button:hover {
+  background: #c9a96e;
+  color: white;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
