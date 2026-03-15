@@ -11,6 +11,8 @@ const db = require('./config/db');
 
 // Importerar routes
 const authRoutes = require('./routes/authRoutes');
+const invitationRoutes = require('./routes/invitationRoutes');
+const guestRoutes = require('./routes/guestRoutes');
 
 // Skapar express-appen
 const app = express();
@@ -21,16 +23,12 @@ app.use(express.json());
 
 // Använder routes
 app.use('/api/auth', authRoutes);
-
-// Importerar invitation routes
-const invitationRoutes = require('./routes/invitationRoutes');
-
-// Använder invitation routes
 app.use('/api/invitations', invitationRoutes);
+app.use('/api/guests', guestRoutes);
 
 // Test route - för att kolla att servern fungerar
 app.get('/', (req, res) => {
-  res.json({ message: 'Digital Invitations API fungerar!  🎉' });
+  res.json({ message: 'Digital Invitations API fungerar! 🎉' });
 });
 
 // Startar servern på port 8080
