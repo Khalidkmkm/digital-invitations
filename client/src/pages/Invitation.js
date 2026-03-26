@@ -103,6 +103,17 @@ function Invitation() {
   return (
     <div className={styles.container}>
 
+      {invitation.video_background && (
+        <video
+          className={styles.videoBg}
+          src={invitation.video_background}
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+      )}
+
       {invitation.music_file && (
         <audio ref={audioRef} src={invitation.music_file} loop />
       )}
@@ -159,24 +170,6 @@ function Invitation() {
           <div className={styles.countItem}>
             <span className={styles.countNum}>{String(countdown.seconds).padStart(2,'0')}</span>
             <span className={styles.countLabel}>{t.seconds}</span>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.detailsSection}>
-        <p className={styles.sectionLabel}>{t.details}</p>
-        <div className={styles.detailsGrid}>
-          <div className={styles.detail}>
-            <p className={styles.detailTitle}>{t.date}</p>
-            <p className={styles.detailValue}>
-              {new Date(invitation.event_date).toLocaleDateString(
-                language === 'SV' ? 'sv-SE' : 'en-GB'
-              )}
-            </p>
-          </div>
-          <div className={styles.detail}>
-            <p className={styles.detailTitle}>{t.location}</p>
-            <p className={styles.detailValue}>{invitation.location}</p>
           </div>
         </div>
       </div>
