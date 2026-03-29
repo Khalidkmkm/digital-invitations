@@ -36,3 +36,7 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Servern körs på port ${PORT}`);
 });
+
+// Stripe routes
+const stripeRoutes = require('./routes/stripeRoutes');
+app.use('/api/stripe', stripeRoutes);

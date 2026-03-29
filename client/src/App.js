@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import AdminPanel from './pages/AdminPanel';
 import Invitation from './pages/Invitation';
+import Payment from './pages/Payment';
+import PaymentSuccess from './pages/PaymentSuccess';
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/invitation/:code" element={<Invitation />} />
+        <Route path="/payment/:code" element={<Payment />} />
+        <Route path="/payment-success/:code" element={<PaymentSuccess />} />
       </Routes>
     </Router>
   );
