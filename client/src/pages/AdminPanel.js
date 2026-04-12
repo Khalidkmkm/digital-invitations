@@ -38,8 +38,8 @@ function AdminPanel() {
     try {
       setFetchError('');
       const [invRes, guestRes] = await Promise.all([
-        axios.get('http://localhost:8080/api/invitations', { headers: { Authorization: token } }),
-        axios.get('http://localhost:8080/api/guests', { headers: { Authorization: token } })
+        axios.get('https://digital-invitations-production-766b.up.railway.app/api/invitations', { headers: { Authorization: token } }),
+        axios.get('https://digital-invitations-production-766b.up.railway.app/api/guests', { headers: { Authorization: token } })
       ]);
       setInvitations(invRes.data);
       setGuests(guestRes.data);
@@ -57,7 +57,7 @@ function AdminPanel() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:8080/api/invitations', formData, {
+      await axios.post('https://digital-invitations-production-766b.up.railway.app/api/invitations', formData, {
         headers: { Authorization: token }
       });
       setSuccessMessage('Inbjudan skapad! ✅');
@@ -73,7 +73,7 @@ function AdminPanel() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:8080/api/guests', guestForm, {
+      const response = await axios.post('https://digital-invitations-production-766b.up.railway.app/api/guests', guestForm, {
         headers: { Authorization: token }
       });
       setGuestSuccess(`Gäst tillagd! Kod: ${response.data.unique_code} 🎉`);

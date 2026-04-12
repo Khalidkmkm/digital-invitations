@@ -54,7 +54,7 @@ function Payment() {
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
-    axios.post('http://localhost:8080/api/stripe/create-payment-intent')
+    axios.post('https://digital-invitations-production-766b.up.railway.app/api/stripe/create-payment-intent')
       .then(res => setClientSecret(res.data.clientSecret))
       .catch(err => console.error(err));
   }, []);

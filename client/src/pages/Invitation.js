@@ -21,7 +21,7 @@ function Invitation() {
   useEffect(() => {
     const fetchInvitation = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/guests/invitation/${code}`);
+        const response = await axios.get(`https://digital-invitations-production-766b.up.railway.app/api/guests/invitation/${code}`);
         setInvitation(response.data);
         setLanguage(response.data.language || 'SV');
       } catch (err) {
@@ -55,7 +55,7 @@ function Invitation() {
   const handleRSVP = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8080/api/guests/rsvp/${code}`, rsvpData);
+      await axios.put(`https://digital-invitations-production-766b.up.railway.app/api/guests/rsvp/${code}`, rsvpData);
       setRsvpSent(true);
     } catch (err) {
       console.error(err);
