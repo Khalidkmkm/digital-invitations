@@ -9,3 +9,4 @@ client/build/
 
 # Mac files
 .DS_Store
+.vscode/
