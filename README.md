@@ -91,9 +91,7 @@ När frontend deployas kan `REACT_APP_API_URL` ändras till din Railway-backend.
 
 ## Admin-login
 
-
-E-post:  admin@digital-invitations.se
-Lösenord: admin123
+Adminuppgifter skapas direkt i databasen och ska inte sparas i GitHub.
 
 ## Live demo
 - **Backend:** https://digital-invitations-production-766b.up.railway.app

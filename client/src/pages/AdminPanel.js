@@ -134,10 +134,44 @@ function AdminPanel() {
   const [csvMessage, setCsvMessage] = useState('');
   const [emailMessage, setEmailMessage] = useState('');
   const [sendingInvitationId, setSendingInvitationId] = useState(null);
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
+  };
+
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    setPasswordMessage('');
+    setPasswordError('');
+
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      setPasswordError('De nya lösenorden matchar inte.');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put(apiUrl('/api/auth/change-password'), {
+        currentPassword: passwordForm.currentPassword,
+        newPassword: passwordForm.newPassword
+      }, {
+        headers: { Authorization: token }
+      });
+
+      setPasswordMessage(response.data.message);
+      setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      setTimeout(handleLogout, 1500);
+    } catch (err) {
+      setPasswordError(err.response?.data?.message || 'Lösenordet kunde inte ändras.');
+    }
   };
 
   const handleChange = (e) => {
@@ -451,6 +485,12 @@ function AdminPanel() {
             onClick={() => setActiveTab('addguest')}
           >
             ➕ Lägg till gäst
+          </button>
+          <button
+            className={activeTab === 'security' ? styles.navItemActive : styles.navItem}
+            onClick={() => setActiveTab('security')}
+          >
+            🔒 Säkerhet
           </button>
         </nav>
 
@@ -874,6 +914,66 @@ function AdminPanel() {
                 Importera gäster
               </button>
             </div>
+          </div>
+        )}
+
+        {/* Säkerhet */}
+        {activeTab === 'security' && (
+          <div className={styles.content}>
+            <h1 className={styles.title}>Säkerhet</h1>
+            <p className={styles.subtitle}>Byt lösenord till adminpanelen</p>
+            {passwordMessage && <p className={styles.success}>{passwordMessage}</p>}
+            {passwordError && <p className={styles.error}>{passwordError}</p>}
+            <form onSubmit={handlePasswordChange} className={styles.form}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Nuvarande lösenord</label>
+                <input
+                  className={styles.input}
+                  type="password"
+                  autoComplete="current-password"
+                  value={passwordForm.currentPassword}
+                  onChange={(e) => setPasswordForm({
+                    ...passwordForm,
+                    currentPassword: e.target.value
+                  })}
+                  required
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Nytt lösenord</label>
+                <input
+                  className={styles.input}
+                  type="password"
+                  autoComplete="new-password"
+                  minLength="10"
+                  value={passwordForm.newPassword}
+                  onChange={(e) => setPasswordForm({
+                    ...passwordForm,
+                    newPassword: e.target.value
+                  })}
+                  required
+                />
+                <p className={styles.importHelp}>Minst 10 tecken. Använd inte samma lösenord på andra tjänster.</p>
+              </div>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Bekräfta nytt lösenord</label>
+                <input
+                  className={styles.input}
+                  type="password"
+                  autoComplete="new-password"
+                  minLength="10"
+                  value={passwordForm.confirmPassword}
+                  onChange={(e) => setPasswordForm({
+                    ...passwordForm,
+                    confirmPassword: e.target.value
+                  })}
+                  required
+                />
+              </div>
+              <button className={styles.submitBtn} type="submit">
+                Byt lösenord
+              </button>
+            </form>
           </div>
         )}
 
