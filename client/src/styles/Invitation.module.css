@@ -5,6 +5,162 @@
   font-family: 'Georgia', serif;
   position: relative;
 }
+.invitationContent {
+  opacity: 0;
+  visibility: hidden;
+}
+.invitationVisible {
+  opacity: 1;
+  visibility: visible;
+  animation: revealInvitation 1s ease both;
+}
+.envelopeIntro {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255,255,255,0.9), transparent 34%),
+    linear-gradient(145deg, #f8f0e9, #e8d9cd);
+  animation: introIn 0.8s ease both;
+}
+.envelopeLabel {
+  margin: 0 0 42px;
+  color: #8f685f;
+  font-family: 'Raleway', sans-serif;
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+}
+.envelope {
+  width: min(420px, 82vw);
+  aspect-ratio: 1.55;
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  filter: drop-shadow(0 28px 32px rgba(71, 45, 39, 0.18));
+  perspective: 1000px;
+}
+.envelopeBack,
+.envelopeFront,
+.envelopeFlap,
+.letter {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+}
+.envelopeBack {
+  background: #d7bca9;
+}
+.letter {
+  z-index: 1;
+  inset: 7% 7% 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  box-sizing: border-box;
+  background: #fffaf5;
+  color: #59323a;
+  box-shadow: 0 4px 16px rgba(71, 45, 39, 0.12);
+  transition: transform 0.7s ease;
+}
+.letter small {
+  margin-bottom: 18px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+.letter strong {
+  font-size: clamp(22px, 5vw, 34px);
+  font-style: italic;
+  font-weight: 400;
+}
+.envelopeFront {
+  z-index: 2;
+  background:
+    linear-gradient(32deg, #ead7c8 49.5%, transparent 50%) left/50.5% 100% no-repeat,
+    linear-gradient(-32deg, #e1c8b6 49.5%, transparent 50%) right/50.5% 100% no-repeat;
+}
+.envelopeFlap {
+  z-index: 3;
+  height: 58%;
+  border-radius: 4px 4px 0 0;
+  background: #ecd9ca;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transition: transform 0.65s ease;
+}
+.waxSeal {
+  position: absolute;
+  z-index: 4;
+  top: 45%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #a85668, #6f2f3e 72%);
+  color: #f4d9cf;
+  font-size: 24px;
+  font-style: italic;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 5px 12px rgba(66, 24, 34, 0.3);
+  transition: transform 0.35s ease, opacity 0.3s ease;
+}
+.envelope:hover .envelopeFlap {
+  transform: rotateX(18deg);
+}
+.envelope:hover .waxSeal {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+.envelopeOpening .envelopeFlap {
+  z-index: 0;
+  transform: rotateX(180deg);
+}
+.envelopeOpening .waxSeal {
+  opacity: 0;
+  transform: translate(-50%, -85%) scale(0.65);
+}
+.envelopeOpening .letter {
+  transform: translateY(-48%);
+}
+.introOpening {
+  animation: introOut 0.35s 0.65s ease both;
+}
+.envelope:focus-visible,
+.openButton:focus-visible {
+  outline: 2px solid #6f2f3e;
+  outline-offset: 6px;
+}
+.openButton {
+  margin-top: 46px;
+  padding: 15px 28px;
+  border: 1px solid #6f2f3e;
+  border-radius: 999px;
+  background: transparent;
+  color: #6f2f3e;
+  cursor: pointer;
+  font-family: 'Raleway', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  transition: 0.25s ease;
+}
+.openButton:hover {
+  background: #6f2f3e;
+  color: white;
+  transform: translateY(-2px);
+}
 .loading, .notFound {
   min-height: 100vh;
   display: flex;
@@ -438,6 +594,23 @@
   font-family: 'Raleway', sans-serif;
   letter-spacing: 2px;
 }
+.rsvpConfirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.resetDemo {
+  padding: 10px 20px;
+  border: 1px solid #c9a96e;
+  background: transparent;
+  color: #9b7742;
+  cursor: pointer;
+  font-family: 'Raleway', sans-serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
 
 /* Videobakgrund – ligger bakom allt innehåll */
 .videoBg {
@@ -451,4 +624,64 @@
   opacity: 0.85;
   filter: saturate(1.35) contrast(1.1) brightness(1.05);
   pointer-events: none;
+}
+
+@keyframes introIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes introOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes revealInvitation {
+  from { opacity: 0; transform: scale(1.02); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding: 70px 22px 40px;
+  }
+
+  .guestCode {
+    display: none;
+  }
+
+  .countdownSection,
+  .dresscodeSection,
+  .hotelsSection,
+  .rsvpSection {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .countdown {
+    gap: 8px;
+  }
+
+  .countSep {
+    font-size: 24px;
+  }
+
+  .programmeSection {
+    width: auto;
+    max-width: none;
+    padding: 50px 42px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .envelopeIntro,
+  .invitationVisible {
+    animation: none;
+  }
+
+  .envelopeFlap,
+  .waxSeal,
+  .openButton {
+    transition: none;
+  }
 }

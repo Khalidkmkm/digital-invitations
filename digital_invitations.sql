@@ -27,6 +27,7 @@ CREATE TABLE `guests` (
   `invitation_id` int NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
   `unique_code` varchar(50) NOT NULL,
   `rsvp_status` enum('pending','attending','not_attending') DEFAULT 'pending',
   `dietary_requirements` text,
@@ -46,7 +47,7 @@ CREATE TABLE `guests` (
 
 LOCK TABLES `guests` WRITE;
 /*!40000 ALTER TABLE `guests` DISABLE KEYS */;
-INSERT INTO `guests` VALUES (1,6,'Test Gäst','test@test.com','ABC123','attending','',0,'Jag och min fru vi kommer ','2026-03-15 10:25:26'),(3,6,'Khalid Mahmoud','KhalidM143@outlook.com','42375E87','pending',NULL,0,NULL,'2026-04-12 09:40:37'),(4,8,'Anab Ali ','Banac2003@hotmail.com','0BC81869','pending',NULL,0,NULL,'2026-04-12 09:48:15');
+INSERT INTO `guests` VALUES (1,6,'Test Gäst','test@test.com',NULL,'ABC123','attending','',0,'Jag och min fru vi kommer ','2026-03-15 10:25:26'),(3,6,'Khalid Mahmoud','KhalidM143@outlook.com',NULL,'42375E87','pending',NULL,0,NULL,'2026-04-12 09:40:37'),(4,8,'Anab Ali ','Banac2003@hotmail.com',NULL,'0BC81869','pending',NULL,0,NULL,'2026-04-12 09:48:15');
 /*!40000 ALTER TABLE `guests` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -4,8 +4,10 @@ import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../styles/Payment.module.css';
+import { apiUrl } from '../config/api';
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+const stripePublicKey = process.env.REACT_APP_STRIPE_PUBLIC_KEY;
+const stripePromise = stripePublicKey ? loadStripe(stripePublicKey) : null;
 
 function CheckoutForm() {
   const stripe = useStripe();
@@ -54,7 +56,9 @@ function Payment() {
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
-    axios.post('https://digital-invitations-production-766b.up.railway.app/api/stripe/create-payment-intent')
+    if (!stripePromise) return;
+
+    axios.post(apiUrl('/api/stripe/create-payment-intent'))
       .then(res => setClientSecret(res.data.clientSecret))
       .catch(err => console.error(err));
   }, []);
@@ -68,8 +72,9 @@ function Payment() {
       <h1 className={styles.title}>Betalning</h1>
       <p className={styles.subtitle}>99 SEK för att se din inbjudan</p>
 
-      {/* Visa bara formuläret när clientSecret finns */}
-      {clientSecret ? (
+      {!stripePromise ? (
+        <p>Betalning är inte konfigurerad i den lokala utvecklingsmiljön.</p>
+      ) : clientSecret ? (
         <Elements stripe={stripePromise} options={options}>
           <CheckoutForm />
         </Elements>

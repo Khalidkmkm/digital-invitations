@@ -1,10 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const { addGuest, getInvitationByCode, updateRSVP } = require('../controllers/guestController');
+const {
+  addGuest,
+  importGuests,
+  sendInvitationEmails,
+  getInvitationByCode,
+  updateRSVP
+} = require('../controllers/guestController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 // POST /api/guests - Lägg till gäst (kräver inloggning)
 router.post('/', authMiddleware, addGuest);
+
+// POST /api/guests/import - Importera flera gäster från CSV-data
+router.post('/import', authMiddleware, importGuests);
+
+// POST /api/guests/send-emails/:invitationId - Skicka inbjudan via e-post
+router.post('/send-emails/:invitationId', authMiddleware, sendInvitationEmails);
 
 // GET /api/guests - Hämta gäster för inloggad användares inbjudningar (kräver inloggning)
 router.get('/', authMiddleware, (req, res) => {

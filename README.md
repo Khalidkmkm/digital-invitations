@@ -63,14 +63,31 @@ npm start
 ```
 
 ## Miljövariabler
-Skapa en `.env` fil i `server/` mappen med följande:
+Skapa en `.env` fil i `server/` mappen. Du kan kopiera `server/.env.example`:
 
+```env
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=ditt_lösenord
 DB_NAME=digital_invitations
+DB_PORT=3306
 JWT_SECRET=ditt_hemliga_nyckel
 STRIPE_SECRET_KEY=din_stripe_nyckel
+CLIENT_URL=http://localhost:3000
+RESEND_API_KEY=din_resend_api_key
+RESEND_FROM_EMAIL=Digital Invitations <din@verifierad-domän.se>
+```
+
+`RESEND_API_KEY` och `RESEND_FROM_EMAIL` behövs bara när du vill skicka riktiga e-postinbjudningar från adminpanelen.
+
+Skapa också en `.env` fil i `client/` mappen. Du kan kopiera `client/.env.example`:
+
+```env
+REACT_APP_API_URL=http://localhost:8080
+REACT_APP_STRIPE_PUBLIC_KEY=din_stripe_public_key
+```
+
+När frontend deployas kan `REACT_APP_API_URL` ändras till din Railway-backend.
 
 ## Admin-login
 

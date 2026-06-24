@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../styles/Login.module.css';
+import { apiUrl } from '../config/api';
 
 function Login() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://digital-invitations-production-766b.up.railway.app/api/auth/login', {
+      const response = await axios.post(apiUrl('/api/auth/login'), {
         email,
         password
       });

@@ -2,9 +2,117 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../styles/Invitation.module.css';
+import { apiUrl } from '../config/api';
+
+const demoInvitation = {
+  title: 'Isabella & Alexander',
+  event_date: '2027-06-14T15:00:00',
+  location: 'Rosendals Trädgård, Stockholm',
+  dress_code: 'Sommarfin',
+  language: 'SV',
+  video_background: '/videos/background.mp4',
+  music_file: '/music/background.mp3',
+  programme: [
+    { time: '15.00', activity: 'Vigsel i trädgården' },
+    { time: '16.00', activity: 'Mingel & fotografi' },
+    { time: '18.00', activity: 'Middag' },
+    { time: '21.00', activity: 'Tårta & dans' }
+  ],
+  hotels: [
+    { name: 'Hotel Hasselbacken', distance: '8 minuters promenad', url: 'https://www.google.com/maps/search/?api=1&query=Hotel+Hasselbacken+Stockholm' },
+    { name: 'Backstage Hotel', distance: '10 minuters promenad', url: 'https://www.google.com/maps/search/?api=1&query=Backstage+Hotel+Stockholm' }
+  ]
+};
+
+const translations = {
+  SV: {
+    invited: 'Du är inbjuden',
+    open: 'Öppna inbjudan',
+    countdown: 'Nedräkning',
+    days: 'Dagar',
+    hours: 'Timmar',
+    minutes: 'Minuter',
+    seconds: 'Sekunder',
+    dresscode: 'Klädkod',
+    dressNote: 'Undvik att bära vitt',
+    programme: 'Dagsprogram',
+    hotels: 'Hotellrekommendationer',
+    rsvp: 'OSA',
+    attending: 'Jag kommer',
+    notAttending: 'Kan ej komma',
+    dietary: 'Matpreferenser / Allergier',
+    messagePlaceholder: 'Meddelande till värdparet...',
+    send: 'Skicka svar',
+    rsvpSent: 'Tack för ditt svar! 🎉',
+    mapsBtn: 'Öppna i Google Maps',
+    book: 'Boka här',
+    retry: 'Testa igen',
+    demo: 'Demoinbjudan'
+  },
+  EN: {
+    invited: 'You are invited',
+    open: 'Open invitation',
+    countdown: 'Countdown',
+    days: 'Days',
+    hours: 'Hours',
+    minutes: 'Minutes',
+    seconds: 'Seconds',
+    dresscode: 'Dress Code',
+    dressNote: 'Please avoid wearing white',
+    programme: 'Day Programme',
+    hotels: 'Hotel Recommendations',
+    rsvp: 'RSVP',
+    attending: 'I will attend',
+    notAttending: 'Cannot attend',
+    dietary: 'Dietary requirements',
+    messagePlaceholder: 'Message to the hosts...',
+    send: 'Send reply',
+    rsvpSent: 'Thank you for your reply! 🎉',
+    mapsBtn: 'Open in Google Maps',
+    book: 'Book here',
+    retry: 'Try again',
+    demo: 'Demo invitation'
+  },
+  SO: {
+    invited: 'Waa lagu casuumay',
+    open: 'Fur casuumadda',
+    countdown: 'Tirinta wakhtiga',
+    days: 'Maalmood',
+    hours: 'Saacadood',
+    minutes: 'Daqiiqado',
+    seconds: 'Ilbiriqsiyo',
+    dresscode: 'Labiska',
+    dressNote: 'Fadlan ha xiran dhar cad',
+    programme: 'Barnaamijka maalinta',
+    hotels: 'Hoteellada lagu taliyay',
+    rsvp: 'Xaqiiji imaanshaha',
+    attending: 'Waan imanayaa',
+    notAttending: 'Ma iman karo',
+    dietary: 'Cunto gaar ah / Xasaasiyad',
+    messagePlaceholder: 'Farriin u reeb lammaanaha...',
+    send: 'Dir jawaabta',
+    rsvpSent: 'Waad ku mahadsan tahay jawaabtaada! 🎉',
+    mapsBtn: 'Ka fur Google Maps',
+    book: 'Halkan ka qabso',
+    retry: 'Mar kale tijaabi',
+    demo: 'Casuumaad tijaabo ah'
+  }
+};
+
+const dateLocales = {
+  SV: 'sv-SE',
+  EN: 'en-GB'
+};
+
+const somaliWeekdays = ['Axad', 'Isniin', 'Talaado', 'Arbaco', 'Khamiis', 'Jimco', 'Sabti'];
+const somaliMonths = [
+  'Janaayo', 'Febraayo', 'Maarso', 'Abriil', 'Maajo', 'Juun',
+  'Luulyo', 'Agoosto', 'Sebteembar', 'Oktoobar', 'Nofeembar', 'Diseembar'
+];
 
 function Invitation() {
   const { code } = useParams();
+  const isDemo = code === 'demo';
   const [invitation, setInvitation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [language, setLanguage] = useState('SV');
@@ -16,12 +124,26 @@ function Invitation() {
     message: ''
   });
   const [rsvpSent, setRsvpSent] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpening, setIsOpening] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
+    setIsOpen(false);
+    setIsOpening(false);
+    setRsvpSent(false);
+
+    if (isDemo) {
+      setInvitation(demoInvitation);
+      setLanguage(demoInvitation.language);
+      setLoading(false);
+      return;
+    }
+
     const fetchInvitation = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get(`https://digital-invitations-production-766b.up.railway.app/api/guests/invitation/${code}`);
+        const response = await axios.get(apiUrl(`/api/guests/invitation/${code}`));
         setInvitation(response.data);
         setLanguage(response.data.language || 'SV');
       } catch (err) {
@@ -31,7 +153,7 @@ function Invitation() {
       }
     };
     fetchInvitation();
-  }, [code]);
+  }, [code, isDemo]);
 
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
@@ -54,8 +176,13 @@ function Invitation() {
 
   const handleRSVP = async (e) => {
     e.preventDefault();
+    if (isDemo) {
+      setRsvpSent(true);
+      return;
+    }
+
     try {
-      await axios.put(`https://digital-invitations-production-766b.up.railway.app/api/guests/rsvp/${code}`, rsvpData);
+      await axios.put(apiUrl(`/api/guests/rsvp/${code}`), rsvpData);
       setRsvpSent(true);
     } catch (err) {
       console.error(err);
@@ -73,35 +200,55 @@ function Invitation() {
     }
   };
 
-  const t = {
-    invited: language === 'SV' ? 'Du är inbjuden' : 'You are invited',
-    countdown: language === 'SV' ? 'Nedräkning' : 'Countdown',
-    days: language === 'SV' ? 'Dagar' : 'Days',
-    hours: language === 'SV' ? 'Timmar' : 'Hours',
-    minutes: language === 'SV' ? 'Minuter' : 'Minutes',
-    seconds: language === 'SV' ? 'Sekunder' : 'Seconds',
-    details: language === 'SV' ? 'Information' : 'Details',
-    date: language === 'SV' ? 'Datum & Tid' : 'Date & Time',
-    location: language === 'SV' ? 'Plats' : 'Location',
-    dresscode: language === 'SV' ? 'Klädkod' : 'Dress Code',
-    programme: language === 'SV' ? 'Dagsprogram' : 'Day Programme',
-    hotels: language === 'SV' ? 'Hotellrekommendationer' : 'Hotel Recommendations',
-    rsvp: language === 'SV' ? 'OSA' : 'RSVP',
-    attending: language === 'SV' ? 'Jag kommer' : 'I will attend',
-    notAttending: language === 'SV' ? 'Kan ej komma' : 'Cannot attend',
-    dietary: language === 'SV' ? 'Matpreferenser / Allergier' : 'Dietary requirements',
-    children: language === 'SV' ? 'Tar du med barn?' : 'Bringing children?',
-    messagePlaceholder: language === 'SV' ? 'Meddelande till värdparet...' : 'Message to the hosts...',
-    send: language === 'SV' ? 'Skicka svar' : 'Send reply',
-    rsvpSent: language === 'SV' ? 'Tack för ditt svar! 🎉' : 'Thank you for your reply! 🎉',
-    mapsBtn: language === 'SV' ? 'Öppna i Google Maps' : 'Open in Google Maps',
+  const openInvitation = () => {
+    if (isOpening) return;
+    setIsOpening(true);
+    if (audioRef.current) {
+      audioRef.current.play()
+        .then(() => setMusicPlaying(true))
+        .catch(() => setMusicPlaying(false));
+    }
+    window.setTimeout(() => setIsOpen(true), 900);
   };
+
+  const t = translations[language] || translations.SV;
+  const eventDate = new Date(invitation?.event_date);
+  const formattedEventDate = language === 'SO'
+    ? `${somaliWeekdays[eventDate.getDay()]}, ${eventDate.getDate()} ${somaliMonths[eventDate.getMonth()]} ${eventDate.getFullYear()}`
+    : eventDate.toLocaleDateString(
+        dateLocales[language] || dateLocales.SV,
+        { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+      );
 
   if (loading) return <div className={styles.loading}>Laddar inbjudan...</div>;
   if (!invitation) return <div className={styles.notFound}>Inbjudan hittades inte.</div>;
 
   return (
     <div className={styles.container}>
+      {!isOpen && (
+        <div className={`${styles.envelopeIntro} ${isOpening ? styles.introOpening : ''}`}>
+          <p className={styles.envelopeLabel}>{t.invited}</p>
+          <button
+            className={`${styles.envelope} ${isOpening ? styles.envelopeOpening : ''}`}
+            onClick={openInvitation}
+            aria-label={t.open}
+          >
+            <span className={styles.envelopeBack}></span>
+            <span className={styles.letter}>
+              <small>{t.invited}</small>
+              <strong>{invitation.title}</strong>
+            </span>
+            <span className={styles.envelopeFront}></span>
+            <span className={styles.envelopeFlap}></span>
+            <span className={styles.waxSeal}>
+              {invitation.title.trim().charAt(0)}
+            </span>
+          </button>
+          <button className={styles.openButton} onClick={openInvitation}>
+            {t.open}
+          </button>
+        </div>
+      )}
 
       {invitation.video_background && (
         <video
@@ -118,6 +265,7 @@ function Invitation() {
         <audio ref={audioRef} src={invitation.music_file} loop />
       )}
 
+      <div className={`${styles.invitationContent} ${isOpen ? styles.invitationVisible : ''}`}>
       <div className={styles.hero}>
         <div className={styles.langToggle}>
           <button
@@ -128,19 +276,20 @@ function Invitation() {
             className={language === 'EN' ? styles.langBtnActive : styles.langBtn}
             onClick={() => setLanguage('EN')}
           >EN</button>
+          <button
+            className={language === 'SO' ? styles.langBtnActive : styles.langBtn}
+            onClick={() => setLanguage('SO')}
+          >SO</button>
         </div>
 
-        <div className={styles.guestCode}>Gästkod: #{code}</div>
+        <div className={styles.guestCode}>
+          {isDemo ? t.demo : `Gästkod: #${code}`}
+        </div>
         <p className={styles.badge}>{t.invited}</p>
         <div className={styles.divider}></div>
         <h1 className={styles.title}>{invitation.title}</h1>
         <div className={styles.divider}></div>
-        <p className={styles.eventDate}>
-          {new Date(invitation.event_date).toLocaleDateString(
-            language === 'SV' ? 'sv-SE' : 'en-GB',
-            { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-          )}
-        </p>
+        <p className={styles.eventDate}>{formattedEventDate}</p>
 
         {invitation.music_file && (
           <button className={styles.musicBtn} onClick={toggleMusic}>
@@ -177,9 +326,7 @@ function Invitation() {
       <div className={styles.dresscodeSection}>
         <p className={styles.sectionLabel}>{t.dresscode}</p>
         <p className={styles.dresscodeTitle}>{invitation.dress_code}</p>
-        <p className={styles.dresscodeSub}>
-          {language === 'SV' ? 'Undvik att bära vitt' : 'Please avoid wearing white'}
-        </p>
+        <p className={styles.dresscodeSub}>{t.dressNote}</p>
       </div>
 
       <div className={styles.locationSection}>
@@ -232,7 +379,7 @@ function Invitation() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {language === 'SV' ? 'Boka här' : 'Book here'}
+                    {t.book}
                   </a>
                 )}
               </div>
@@ -244,7 +391,17 @@ function Invitation() {
       <div className={styles.rsvpSection}>
         <h2 className={styles.rsvpTitle}>{t.rsvp}</h2>
         {rsvpSent ? (
-          <p className={styles.rsvpSuccess}>{t.rsvpSent}</p>
+          <div className={styles.rsvpConfirmation}>
+            <p className={styles.rsvpSuccess}>{t.rsvpSent}</p>
+            {isDemo && (
+              <button
+                className={styles.resetDemo}
+                onClick={() => setRsvpSent(false)}
+              >
+                {t.retry}
+              </button>
+            )}
+          </div>
         ) : (
           <form onSubmit={handleRSVP} className={styles.rsvpForm}>
             <div className={styles.rsvpButtons}>
@@ -285,6 +442,7 @@ function Invitation() {
             </button>
           </form>
         )}
+      </div>
       </div>
 
     </div>
